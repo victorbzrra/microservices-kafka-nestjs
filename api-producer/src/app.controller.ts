@@ -32,6 +32,6 @@ export class AppController implements OnModuleInit {
 
   @Post()
   infoRoutine(@Body() info: InfoRoutine ): Observable<InfoRoutine> {
-    return this.client.emit('info-routine', info);
+    return this.client.send('info-routine', info);
   }
 }
