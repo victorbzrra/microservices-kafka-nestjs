@@ -1,13 +1,13 @@
 import { Module } from '@nestjs/common';
-import { MongooseModule } from '@nestjs/mongoose';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { CoreSchema } from './interfaces/core.model';
+import { MongooseModule } from '@nestjs/mongoose';
+import { AirplaneModule } from './airplane/airplane.module';
 
 @Module({
   imports: [
     MongooseModule.forRoot('mongodb://root:example@mongo:27017/kafka'),
-    MongooseModule.forFeature([{ name: 'registers', schema: CoreSchema}]),
+    AirplaneModule,
   ],
   controllers: [AppController],
   providers: [AppService],
