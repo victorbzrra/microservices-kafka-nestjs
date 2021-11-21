@@ -8,7 +8,7 @@ export class AirplaneController {
   constructor(private readonly airplaneService: AirplaneService){}
 
   @MessagePattern('info-routine')
-  async createRegister(@Payload() register: Airplane): Promise<Airplane> {
-    return this.airplaneService.createRegister(register);
+  async createRegister(@Payload() register: any): Promise<Airplane> {
+    return this.airplaneService.createRegister(register.value);
   }
 }
