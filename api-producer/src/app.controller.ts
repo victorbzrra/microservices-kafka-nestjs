@@ -9,11 +9,11 @@ export class AppController implements OnModuleInit {
     transport: Transport.KAFKA,
     options: {
       client: {
-        clientId: 'app',
+        clientId: 'api',
         brokers: ['localhost:9092'],
       },
       consumer: {
-        groupId: 'app-consumer',
+        groupId: 'api-consumer',
         allowAutoTopicCreation: true
       }
     }
@@ -22,7 +22,7 @@ export class AppController implements OnModuleInit {
   private client: ClientKafka;
   
   async onModuleInit() {
-    const requestPatters = ['info-routine'];
+    const requestPatters = ['api-core-airplane'];
 
     requestPatters.forEach(async pattern => {
       this.client.subscribeToResponseOf(pattern);
@@ -32,6 +32,6 @@ export class AppController implements OnModuleInit {
 
   @Post()
   infoRoutine(@Body() info: InfoRoutine ): Observable<InfoRoutine> {
-    return this.client.send('info-routine', info);
+    return this.client.send('api-core-airplane', info);
   }
 }
