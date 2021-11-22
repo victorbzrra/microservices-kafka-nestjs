@@ -1,7 +1,6 @@
 import { Document } from "mongoose";
 
 export class Register extends Document {
-  id: number;
   type_transport: string;
   location: {
     latitude: number;

@@ -1,5 +1,4 @@
 export interface Register {
-  id: number,
   type_transport: string,
   location: {
     latitude: number,
