@@ -1,11 +1,11 @@
 import { Controller, OnModuleInit } from '@nestjs/common';
 import { Client, ClientKafka, MessagePattern, Payload, Transport } from '@nestjs/microservices';
 import { Observable } from 'rxjs';
-import { AirplaneService } from './airplane.service';
-import { Airplane } from './dto/airplane';
+import { RegisterService } from './register.service';
+import { Register } from './dto/register';
 
-@Controller('airplane')
-export class AirplaneController implements OnModuleInit{
+@Controller('register')
+export class RegisterController implements OnModuleInit{
   @Client({
     transport: Transport.KAFKA,
     options: {
@@ -14,7 +14,7 @@ export class AirplaneController implements OnModuleInit{
         brokers: ['localhost:9092'],
       },
       consumer: {
-        groupId: 'core-consumer',
+        groupId: 'core-producer',
         allowAutoTopicCreation: true
       }
     }
@@ -31,12 +31,12 @@ export class AirplaneController implements OnModuleInit{
     });
   }
 
-  constructor(private readonly airplaneService: AirplaneService){}
+  constructor(private readonly registerService: RegisterService){}
 
-  @MessagePattern('api-core-airplane')
-  async createRegister(@Payload() register: any): Promise<Airplane> {
+  @MessagePattern('api-core')
+  async createRegister(@Payload() register: any): Promise<Register> {
     this.sendToConsumer(register.value);
-    return this.airplaneService.createRegister(register.value);
+    return this.registerService.createRegister(register.value);
   }
 
   sendToConsumer(register: any): Observable<any>{

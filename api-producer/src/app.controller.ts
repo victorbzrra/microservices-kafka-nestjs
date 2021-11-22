@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs';
+import { Register } from './app.interface';
 import { Body, Controller, OnModuleInit, Post } from '@nestjs/common';
 import { Client, ClientKafka, Transport } from '@nestjs/microservices';
-import { InfoRoutine } from './interfaces/info-interface';
 
 @Controller()
 export class AppController implements OnModuleInit {
@@ -13,7 +13,7 @@ export class AppController implements OnModuleInit {
         brokers: ['localhost:9092'],
       },
       consumer: {
-        groupId: 'api-consumer',
+        groupId: 'api-producer',
         allowAutoTopicCreation: true
       }
     }
@@ -22,7 +22,7 @@ export class AppController implements OnModuleInit {
   private client: ClientKafka;
   
   async onModuleInit() {
-    const requestPatters = ['api-core-airplane'];
+    const requestPatters = ['api-core'];
 
     requestPatters.forEach(async pattern => {
       this.client.subscribeToResponseOf(pattern);
@@ -31,7 +31,7 @@ export class AppController implements OnModuleInit {
   }
 
   @Post()
-  infoRoutine(@Body() info: InfoRoutine ): Observable<InfoRoutine> {
-    return this.client.send('api-core-airplane', info);
+  sendRegister(@Body() register: Register ): Observable<Register> {
+    return this.client.send('api-core', register);
   }
 }
